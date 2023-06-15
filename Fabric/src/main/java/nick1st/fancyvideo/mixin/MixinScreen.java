@@ -40,14 +40,14 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @SuppressWarnings("unused")
 public abstract class MixinScreen {
     //BackgroundDrawnEvent
-    @Inject(at = @At(value = "TAIL"), method = "renderBackground(Lcom/mojang/blaze3d/vertex/PoseStack;I)V")
-    private void onBackgroundDrawn(PoseStack matrix, int vOffset, CallbackInfo info) {
+    @Inject(at = @At(value = "TAIL"), method = "renderBackground(Lcom/mojang/blaze3d/vertex/PoseStack;)V")
+    private void onBackgroundDrawn(PoseStack matrix, CallbackInfo info) {
         FancyVideoEventBus.getInstance().runEvent(new DrawBackgroundEvent((Screen)((Object)this), matrix));
     }
 
     //BackgroundDrawnEvent
     @Inject(at = @At(value = "TAIL"), method = "renderDirtBackground")
-    private void onBackgroundTextureDrawn(int vOffset, CallbackInfo info) {
+    private void onBackgroundTextureDrawn(PoseStack poseStack, CallbackInfo ci) {
         FancyVideoEventBus.getInstance().runEvent(new DrawBackgroundEvent((Screen)((Object)this), new PoseStack()));
     }
 }
